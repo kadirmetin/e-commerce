@@ -1,5 +1,6 @@
 const Product = require("../models/product");
 const ProductFilter = require("../utils/productFilter");
+const cloudinary = require("cloudinary");
 
 const allProducts = async (req, res) => {
   try {
@@ -32,20 +33,36 @@ const detailProduct = async (req, res) => {
 
     res.status(200).json({ products });
   } catch (err) {
-    console.log(err);
+    console.error(err);
 
     res.status(500).json({ message: "Internal server error" });
   }
 };
 
-const createProduct = async (req, res) => {
+const createProduct = async (req, res, next) => {
   try {
-    // if (req.user.role !== "admin") {
-    //   return res.status(403).json({
-    //     message:
-    //       "Access denied. You need admin privileges to create a product.",
-    //   });
-    // }
+    let images = [];
+
+    if (typeof req.body.images === "string") {
+      images.push(req.body.images);
+    } else {
+      images = req.body.images;
+    }
+
+    let imagesLinks = [];
+
+    for (let i = 0; i < images.length; i++) {
+      const result = await cloudinary.uploader.upload(images[i], {
+        folder: "products",
+      });
+
+      imagesLinks.push({
+        public_id: result.public_id,
+        url: result.secure_url,
+      });
+    }
+
+    req.body.images = imagesLinks;
 
     const product = await Product.create(req.body);
 
@@ -59,48 +76,67 @@ const createProduct = async (req, res) => {
   }
 };
 
-const deleteProduct = async (req, res) => {
+const deleteProduct = async (req, res, next) => {
   try {
-    // if (req.user.role !== "admin") {
-    //   return res.status(403).json({
-    //     message:
-    //       "Access denied. You need admin privileges to create a product.",
-    //   });
-    // }
-
     const product = await Product.findById(req.params.id);
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
+    }
+
+    for (let i = 0; i < product.images.length; i++) {
+      await cloudinary.uploader.destroy(product.images[i].public_id);
     }
 
     await product.remove();
 
     res.status(200).json({ message: "Product deleted successfully" });
   } catch (err) {
-    console.log(err);
+    console.error(err);
 
     res.status(500).json({ message: "Internal server error" });
   }
 };
 
-const updateProduct = async (req, res) => {
+const updateProduct = async (req, res, next) => {
   try {
-    // if (req.user.role !== "admin") {
-    //   return res.status(403).json({
-    //     message:
-    //       "Access denied. You need admin privileges to create a product.",
-    //   });
-    // }
-
     const product = await Product.findById(req.params.id);
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
+    let images = [];
+
+    if (typeof req.body.images === "string") {
+      images.push(req.body.images);
+    } else {
+      images = req.body.images;
+    }
+
+    if (images !== undefined) {
+      for (let i = 0; i < product.images.length; i++) {
+        await cloudinary.uploader.destroy(product.images[i].public_id);
+      }
+    }
+
+    let imagesLinks = [];
+
+    for (let i = 0; i < images.length; i++) {
+      const result = await cloudinary.uploader.upload(images[i], {
+        folder: "products",
+      });
+
+      imagesLinks.push({
+        public_id: result.public_id,
+        url: result.secure_url,
+      });
+    }
+
+    req.body.images = imagesLinks;
+
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true }
+      { new: true, runValidators: true }
     );
 
     if (!updatedProduct) {
@@ -120,10 +156,64 @@ const updateProduct = async (req, res) => {
   }
 };
 
+const createProductReview = async (req, res, next) => {
+  const { productId, comment, rating } = req.body;
+
+  try {
+    if (!productId || !comment || !rating) {
+      return res.status(400).json({ message: "Invalid input data" });
+    }
+
+    const review = {
+      user: req.user._id,
+      name: req.user.name,
+      comment,
+      rating: Number(rating),
+    };
+
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    const isReviewed = product.reviews.find(
+      (r) => r.user.toString() === req.user._id.toString()
+    );
+
+    if (isReviewed) {
+      product.reviews.forEach((review) => {
+        if (review.user.toString() === req.user._id.toString()) {
+          review.comment = comment;
+          review.rating = rating;
+        }
+      });
+    } else {
+      product.reviews.push(review);
+      product.numReviews = product.reviews.length;
+    }
+
+    product.rating =
+      product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+      product.reviews.length;
+
+    await product.save({ validateBeforeSave: false });
+
+    res.status(200).json({ message: "Review added" });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Internal server error. Unable to add the review.",
+    });
+  }
+};
+
 module.exports = {
   allProducts,
   detailProduct,
   createProduct,
   deleteProduct,
   updateProduct,
+  createProductReview,
 };
