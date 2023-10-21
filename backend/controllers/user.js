@@ -114,7 +114,7 @@ const logout = async (req, res) => {
   }
 };
 
-const forgetPassword = async (req, res) => {
+const forgotPassword = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
 
@@ -181,6 +181,67 @@ const forgetPassword = async (req, res) => {
   }
 };
 
-const resetPassword = async (req, res) => {};
+const resetPassword = async (req, res) => {
+  try {
+    const resetPasswordToken = crypto
+      .createHash("sha256")
+      .update(req.params.token)
+      .digest("hex");
 
-module.exports = { register, login, logout, forgetPassword, resetPassword };
+    const user = await User.findOne({
+      resetPasswordToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid reset token." });
+    }
+
+    user.password = req.body.password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save();
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "30d",
+    });
+
+    const cookieOptions = {
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      httpOnly: true,
+    };
+
+    res
+      .status(200)
+      .cookie("token", token, cookieOptions)
+      .json({ message: "Reset Password Successful!", user, token });
+  } catch (error) {
+    console.error(error);
+
+    res
+      .status(500)
+      .json({ message: "An error occurred while resetting the password." });
+  }
+};
+
+const userDetail = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    res.status(200).json({ user });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+module.exports = {
+  register,
+  login,
+  logout,
+  forgotPassword,
+  resetPassword,
+  userDetail,
+};
