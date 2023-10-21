@@ -3,10 +3,11 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
-const db = require("./config/db");
-const product = require("./routes/products");
 const cloudinary = require("cloudinary").v2;
 
+const db = require("./config/db");
+const product = require("./routes/products");
+const user = require("./routes/user");
 dotenv.config();
 
 cloudinary.config({
@@ -21,6 +22,7 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(cookieParser());
 
 app.use("/", product);
+app.use("/", user);
 
 db();
 
