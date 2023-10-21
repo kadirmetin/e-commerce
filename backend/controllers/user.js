@@ -1,6 +1,9 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const cloudinary = require("cloudinary").v2;
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -15,8 +18,14 @@ const register = async (req, res) => {
     if (password.length < 6) {
       return res
         .status(400)
-        .json({ message: "Password is at least 6 characters long." });
+        .json({ message: "Password must be at least 6 characters long." });
     }
+
+    const avatar = await cloudinary.uploader.upload(req.body.avatar, {
+      folder: "avatars",
+      width: 150,
+      crop: "scale",
+    });
 
     const passwordHash = await bcrypt.hash(password, 10);
 
@@ -24,6 +33,10 @@ const register = async (req, res) => {
       name,
       email,
       password: passwordHash,
+      avatar: {
+        public_id: avatar.public_id,
+        url: avatar.secure_url,
+      },
     });
 
     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
@@ -38,9 +51,9 @@ const register = async (req, res) => {
     res
       .status(200)
       .cookie("token", token, cookieOptions)
-      .json({ message: "Register Success!", user: newUser, token });
+      .json({ message: "Registration Successful!", user: newUser, token });
   } catch (error) {
-    console.error(error);
+    console.error("Registration error:", error);
 
     res.status(500).json({ message: "An error occurred during registration." });
   }
@@ -96,11 +109,77 @@ const logout = async (req, res) => {
       .json({ message: "Logout successful" });
   } catch (error) {
     console.error(error);
+
     res.status(500).json({ message: "An error occurred while logging out." });
   }
 };
 
-const forgetPassword = async (req, res) => {};
+const forgetPassword = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+
+    if (!user) {
+      return res.status(400).json({ message: "User does not exist." });
+    }
+
+    const passwordResetToken = crypto.randomBytes(20).toString("hex");
+
+    user.resetPasswordToken = crypto
+      .createHash("sha256")
+      .update(passwordResetToken)
+      .digest("hex");
+
+    user.resetPasswordExpire = Date.now() + 30 * 60 * 1000;
+
+    await user.save({ validateBeforeSave: false });
+
+    const resetURL = `${req.protocol}://${req.get(
+      "host"
+    )}/reset/${passwordResetToken}`;
+
+    const message = `
+      <h1>You have requested a password reset</h1>
+      <p>Please go to this link to reset your password</p>
+      <a href="${resetURL}" clicktracking="off">${resetURL}</a>
+    `;
+
+    try {
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        service: process.env.SMTP_SERVICE,
+        port: process.env.SMTP_PORT,
+        auth: {
+          user: process.env.SMTP_EMAIL,
+          pass: process.env.SMTP_PASSWORD,
+        },
+      });
+
+      const mailOptions = {
+        from: process.env.SMTP_EMAIL,
+        to: user.email,
+        subject: "Password Reset Request",
+        html: message,
+      };
+
+      await transporter.sendMail(mailOptions);
+
+      res.status(200).json({ message: "Email sent" });
+    } catch (error) {
+      console.error(error);
+
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+
+      await user.save({ validateBeforeSave: false });
+
+      res.status(500).json({ message: "Email could not be sent." });
+    }
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 
 const resetPassword = async (req, res) => {};
 
