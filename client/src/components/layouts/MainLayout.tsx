@@ -7,8 +7,6 @@ const MainLayout = () => {
       <Header />
       <main
         style={{
-          height: "100%",
-          width: "100%",
           paddingTop: 5,
           paddingBottom: 5,
         }}

@@ -62,6 +62,7 @@ const Header = () => {
         position: "sticky",
         top: 0,
         backgroundColor: "#fff",
+        zIndex: 1000,
       }}
     >
       <Container
