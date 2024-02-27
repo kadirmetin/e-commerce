@@ -55,7 +55,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const Header = () => {
   return (
-    <nav>
+    <nav
+      style={{
+        overflowY: "auto",
+        maxHeight: "100vh",
+        position: "sticky",
+        top: 0,
+        backgroundColor: "#fff",
+      }}
+    >
       <Container
         sx={{
           display: "flex",
@@ -64,7 +72,6 @@ const Header = () => {
           alignItems: "center",
           width: "100%",
           height: 64,
-          backgroundColor: "#fff",
         }}
       >
         <Box
@@ -101,6 +108,7 @@ const Header = () => {
             aria-label="account"
             edge="end"
             color="inherit"
+            href={"/account"}
           >
             <AccountCircleIcon />
           </IconButton>
