@@ -1,5 +1,5 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { Layout } from "./components";
+import RoutesList from "./routes";
 
 const theme = createTheme({
   palette: {
@@ -16,9 +16,7 @@ const theme = createTheme({
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
-      <Layout>
-        <p>Hello World!</p>
-      </Layout>
+      <RoutesList />
     </ThemeProvider>
   );
 };
