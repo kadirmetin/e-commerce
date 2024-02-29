@@ -1,19 +1,21 @@
-import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-import express, { Request, Response } from "express";
+import express from "express";
+import connectDB from "../config/db";
+import { router } from "./routes/router";
 
 dotenv.config();
 
 const app = express();
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(cookieParser());
+app.use("/", router);
 
 const PORT = process.env.PORT || 3001;
 
-app.get("/api", (req: Request, res: Response) => {
-  return res.status(200).send({ response: "Hello World!" });
-});
+connectDB();
 
 app.listen(PORT, () => {
   console.log(`[SERVER] Server started on port ${PORT}!`);

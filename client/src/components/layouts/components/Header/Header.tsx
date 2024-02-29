@@ -1,15 +1,22 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import SearchIcon from "@mui/icons-material/Search";
+import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import {
   Box,
   Container,
   IconButton,
   InputBase,
+  Link,
+  Menu,
+  MenuItem,
   Typography,
   alpha,
   styled,
 } from "@mui/material";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../../context/AuthContext";
+import { useSnackbar } from "../../../../context/ToastContext";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -54,6 +61,28 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Header = () => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const { user, token, setTokenandUser } = useAuth();
+  const navigate = useNavigate();
+  const { openSnackbar } = useSnackbar();
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    navigate(0);
+    setTokenandUser(null, null);
+
+    openSnackbar("Çıkış işlemi başarılı", "success");
+  };
+
   return (
     <nav
       style={{
@@ -75,6 +104,11 @@ const Header = () => {
           height: 64,
         }}
       >
+        <Box>
+          <IconButton aria-label="menu" edge="start" color="inherit">
+            <MenuIcon style={{ fontSize: 28 }} />
+          </IconButton>
+        </Box>
         <Box
           sx={{
             display: "flex",
@@ -82,18 +116,16 @@ const Header = () => {
             alignItems: "center",
           }}
         >
-          <Typography variant="h6" fontWeight={"semibold"} letterSpacing={5}>
-            SMA SHOP
-          </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
+          <Link href="/" underline="none" color={"black"}>
+            <Typography
+              variant="h6"
+              fontWeight={"semibold"}
+              letterSpacing={5}
+              className="select-none"
+            >
+              SMA SHOP
+            </Typography>
+          </Link>
         </Box>
 
         <Box
@@ -105,21 +137,53 @@ const Header = () => {
           }}
         >
           <IconButton
-            size="large"
             aria-label="account"
-            edge="end"
+            edge="start"
             color="inherit"
-            href={"/account"}
+            onClick={handleClick}
           >
-            <AccountCircleIcon />
+            {user ? (
+              <img
+                src={`https://ui-avatars.com/api/?name=${user?.name}`}
+                className="rounded-3xl h-8 w-8"
+                alt="avatar"
+              />
+            ) : (
+              <AccountCircleIcon style={{ fontSize: 28 }} />
+            )}
           </IconButton>
-          <IconButton
-            size="large"
-            aria-label="shoppingbag"
-            edge="end"
-            color="inherit"
-          >
-            <ShoppingBagIcon />
+
+          <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+            {token
+              ? [
+                  <MenuItem key="account" onClick={() => navigate("/account")}>
+                    Hesabım
+                  </MenuItem>,
+                  <MenuItem key="favorites" onClick={() => {}}>
+                    Favoriler
+                  </MenuItem>,
+                  <MenuItem key="logout" onClick={handleLogout}>
+                    Çıkış Yap
+                  </MenuItem>,
+                ]
+              : [
+                  <MenuItem
+                    key="login"
+                    onClick={() => navigate("/account/login")}
+                  >
+                    Giriş Yap
+                  </MenuItem>,
+                  <MenuItem
+                    key="register"
+                    onClick={() => navigate("/account/register")}
+                  >
+                    Üye Ol
+                  </MenuItem>,
+                ]}
+          </Menu>
+
+          <IconButton aria-label="shoppingbag" edge="start" color="inherit">
+            <ShoppingBagIcon style={{ fontSize: 28 }} />
           </IconButton>
         </Box>
       </Container>

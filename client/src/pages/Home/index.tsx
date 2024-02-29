@@ -6,7 +6,6 @@ const index = () => {
   return (
     <Container>
       <Slider />
-
       <HomePageProductCardArea title="Yeni Sezon" />
       <HomePageProductCardArea title="En Popüler" />
     </Container>
