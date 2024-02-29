@@ -12,11 +12,13 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../context/AuthContext";
+import { useDrawer } from "../../../../context/Drawer/DrawerContext";
 import { useSnackbar } from "../../../../context/ToastContext";
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const { toggleDrawer } = useDrawer();
 
   const { user, token, setTokenandUser } = useAuth();
   const navigate = useNavigate();
@@ -59,7 +61,12 @@ const Header = () => {
         }}
       >
         <Box>
-          <IconButton aria-label="menu" edge="start" color="inherit">
+          <IconButton
+            aria-label="menu"
+            edge="start"
+            color="inherit"
+            onClick={toggleDrawer(true, "menu", "left")}
+          >
             <MenuIcon style={{ fontSize: 28 }} />
           </IconButton>
         </Box>
@@ -139,7 +146,12 @@ const Header = () => {
                 ]}
           </Menu>
 
-          <IconButton aria-label="shoppingbag" edge="start" color="inherit">
+          <IconButton
+            aria-label="shoppingbag"
+            edge="start"
+            color="inherit"
+            onClick={toggleDrawer(true, "shoppingBag", "right")}
+          >
             <ShoppingBagIcon style={{ fontSize: 28 }} />
           </IconButton>
         </Box>

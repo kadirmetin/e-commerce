@@ -1,6 +1,7 @@
 import "@fontsource-variable/comfortaa";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import AuthProvider from "./context/AuthContext";
+import { DrawerProvider } from "./context/Drawer/DrawerContext";
 import { SnackbarProvider } from "./context/ToastContext";
 import RoutesList from "./routes";
 
@@ -28,7 +29,9 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <AuthProvider>
         <SnackbarProvider>
-          <RoutesList />
+          <DrawerProvider>
+            <RoutesList />
+          </DrawerProvider>
         </SnackbarProvider>
       </AuthProvider>
     </ThemeProvider>
