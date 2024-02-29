@@ -5,60 +5,14 @@ import {
   Box,
   Container,
   IconButton,
-  InputBase,
-  Link,
   Menu,
   MenuItem,
   Typography,
-  alpha,
-  styled,
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../context/AuthContext";
 import { useSnackbar } from "../../../../context/ToastContext";
-
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.black, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.black, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  display: "flex",
-  width: "100%",
-  alignItems: "center",
-  maxHeight: 40,
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
-    width: "auto",
-  },
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
-}));
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -114,18 +68,18 @@ const Header = () => {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
+            cursor: "pointer",
           }}
+          onClick={() => navigate("/")}
         >
-          <Link href="/" underline="none" color={"black"}>
-            <Typography
-              variant="h6"
-              fontWeight={"semibold"}
-              letterSpacing={5}
-              className="select-none"
-            >
-              SMA SHOP
-            </Typography>
-          </Link>
+          <Typography
+            variant="h6"
+            fontWeight={"semibold"}
+            letterSpacing={5}
+            className="select-none"
+          >
+            SMA SHOP
+          </Typography>
         </Box>
 
         <Box
@@ -159,7 +113,10 @@ const Header = () => {
                   <MenuItem key="account" onClick={() => navigate("/account")}>
                     Hesabım
                   </MenuItem>,
-                  <MenuItem key="favorites" onClick={() => {}}>
+                  <MenuItem
+                    key="favorites"
+                    onClick={() => navigate("/account")}
+                  >
                     Favoriler
                   </MenuItem>,
                   <MenuItem key="logout" onClick={handleLogout}>
