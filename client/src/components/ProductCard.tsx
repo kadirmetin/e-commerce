@@ -29,7 +29,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
       <img
         src={`${product?.image}`}
         alt="product photo"
-        className="rounded-md object-contain w-full h-3/4 aspect-square"
+        className="object-contain w-full h-3/4 aspect-square"
       />
       <Box
         sx={{

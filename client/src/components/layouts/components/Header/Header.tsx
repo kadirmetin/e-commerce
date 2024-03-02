@@ -12,6 +12,7 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../context/AuthContext";
+import { useCart } from "../../../../context/CartContext";
 import { useDrawer } from "../../../../context/Drawer/DrawerContext";
 import { useSnackbar } from "../../../../context/ToastContext";
 
@@ -19,6 +20,7 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const { toggleDrawer } = useDrawer();
+  const { state } = useCart();
 
   const { user, token, setTokenandUser } = useAuth();
   const navigate = useNavigate();
@@ -65,7 +67,7 @@ const Header = () => {
             aria-label="menu"
             edge="start"
             color="inherit"
-            onClick={toggleDrawer(true, "menu", "left")}
+            onClick={() => toggleDrawer(true, "menu", "left")}
           >
             <MenuIcon style={{ fontSize: 28 }} />
           </IconButton>
@@ -146,14 +148,36 @@ const Header = () => {
                 ]}
           </Menu>
 
-          <IconButton
-            aria-label="shoppingbag"
-            edge="start"
-            color="inherit"
-            onClick={toggleDrawer(true, "shoppingBag", "right")}
-          >
-            <ShoppingBagIcon style={{ fontSize: 28 }} />
-          </IconButton>
+          <Box position="relative">
+            <IconButton
+              aria-label="shoppingbag"
+              edge="start"
+              color="inherit"
+              onClick={() => toggleDrawer(true, "shoppingBag", "right")}
+            >
+              <ShoppingBagIcon style={{ fontSize: 28 }} />
+              {state.cartItems.length > 0 && (
+                <Box
+                  sx={{
+                    position: "absolute",
+                    bottom: "-2px",
+                    right: "-2px",
+                  }}
+                >
+                  <Typography
+                    fontSize={10}
+                    py={0.5}
+                    px={1}
+                    bgcolor={"red"}
+                    color={"white"}
+                    borderRadius={999}
+                  >
+                    {state.cartItems.length}
+                  </Typography>
+                </Box>
+              )}
+            </IconButton>
+          </Box>
         </Box>
       </Container>
     </nav>

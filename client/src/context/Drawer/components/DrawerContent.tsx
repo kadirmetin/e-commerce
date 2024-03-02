@@ -8,7 +8,7 @@ interface DrawerContentProps {
     newOpen: boolean,
     drawerContent: string,
     anchor: "top" | "right" | "bottom" | "left"
-  ) => () => void;
+  ) => void;
   content: string;
 }
 

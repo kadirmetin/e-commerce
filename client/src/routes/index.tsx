@@ -4,6 +4,7 @@ import ScrollToTop from "../components/layouts/components/ScrollToTop";
 import { AccountIndex, HomeIndex, NotFound, ProductIndex } from "../pages";
 import Login from "../pages/Account/Login";
 import Register from "../pages/Account/Register";
+import OrderReceived from "../pages/OrderReceived";
 import { LoginandRegisterProtect, ProtectedRoute } from "./ProtectedRoute";
 
 const RoutesList = () => {
@@ -14,6 +15,11 @@ const RoutesList = () => {
         <Route path="/" element={<HomeIndex />} />
         <Route path="/product" element={<Navigate to="/404" replace />} />
         <Route path="/product/:productId" element={<ProductIndex />} />
+        <Route path="/orderReceived">
+          <Route element={<ProtectedRoute />}>
+            <Route index={true} element={<OrderReceived />} />
+          </Route>
+        </Route>
       </Route>
       <Route path="/account">
         <Route element={<MainLayout />}>

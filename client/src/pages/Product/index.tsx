@@ -9,10 +9,12 @@ import {
   removeFavorite,
 } from "../../api/apiService";
 import { useAuth } from "../../context/AuthContext";
+import { useCart } from "../../context/CartContext";
 import { useSnackbar } from "../../context/ToastContext";
 import ProductIndexSkeleton from "./components/ProductIndexSkeleton";
 
 interface ProductInfo {
+  _id: string;
   name: string;
   desc: string;
   image: string;
@@ -26,6 +28,7 @@ const ProductIndex = () => {
   const { token, user, updateUserFavorites } = useAuth();
   const navigate = useNavigate();
   const { openSnackbar } = useSnackbar();
+  const { dispatch } = useCart();
 
   const [loading, setLoading] = useState(false);
   const [productInfo, setProductInfo] = useState<ProductInfo | null>(null);
@@ -135,6 +138,31 @@ const ProductIndex = () => {
     }
   };
 
+  const handleAddToCart = (productInfo: ProductInfo | null) => {
+    try {
+      if (productInfo) {
+        const { _id, name, price, image } = productInfo;
+
+        dispatch({
+          type: "ADD_TO_CART",
+          payload: {
+            id: _id,
+            name: name,
+            price: price,
+            image: image,
+          },
+        });
+
+        openSnackbar("Ürün sepete eklendi", "success");
+      } else {
+        throw new Error("Ürün bilgileri eksik");
+      }
+    } catch (error) {
+      console.error(error);
+      openSnackbar(`${error}`, "error");
+    }
+  };
+
   return (
     <Box className="flex flex-col h-full w-full items-center gap-5 p-2 md:flex-row md:items-start md:h-screen">
       {loading ? (
@@ -165,6 +193,7 @@ const ProductIndex = () => {
                 variant="contained"
                 size="large"
                 className="w-11/12 md:w-3/4"
+                onClick={() => handleAddToCart(productInfo)}
               >
                 Sepete Ekle
               </Button>

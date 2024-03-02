@@ -7,7 +7,7 @@ interface MenuDrawerProps {
     newOpen: boolean,
     drawerContent: string,
     anchor: "top" | "right" | "bottom" | "left"
-  ) => () => void;
+  ) => void;
 }
 
 const MenuDrawer: FC<MenuDrawerProps> = ({ toggleDrawer }) => {
@@ -21,7 +21,7 @@ const MenuDrawer: FC<MenuDrawerProps> = ({ toggleDrawer }) => {
           aria-label="exit"
           edge="start"
           color="inherit"
-          onClick={toggleDrawer(false, "menu", "left")}
+          onClick={() => toggleDrawer(false, "menu", "left")}
         >
           <ClearIcon color="inherit" fontSize="medium" />
         </IconButton>

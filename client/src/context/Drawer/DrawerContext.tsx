@@ -14,7 +14,7 @@ interface DrawerContextProps {
     newOpen: boolean,
     drawerContent: string,
     anchor: "top" | "right" | "bottom" | "left"
-  ) => () => void;
+  ) => void;
   content: string;
   anchor_: "top" | "right" | "bottom" | "left";
 }
@@ -28,17 +28,15 @@ export const DrawerProvider: FC<{ children: ReactNode }> = ({ children }) => {
     "left"
   );
 
-  const toggleDrawer =
-    (
-      newOpen: boolean,
-      drawerContent: string,
-      anchor: "top" | "right" | "bottom" | "left"
-    ) =>
-    () => {
-      setOpen(newOpen);
-      setContent(drawerContent);
-      setAnchor_(anchor);
-    };
+  const toggleDrawer = (
+    newOpen: boolean,
+    drawerContent: string,
+    anchor: "top" | "right" | "bottom" | "left"
+  ) => {
+    setOpen(newOpen);
+    setContent(drawerContent);
+    setAnchor_(anchor);
+  };
 
   return (
     <DrawerContext.Provider value={{ toggleDrawer, content, anchor_ }}>
@@ -46,7 +44,7 @@ export const DrawerProvider: FC<{ children: ReactNode }> = ({ children }) => {
       <>
         <Drawer
           open={open}
-          onClose={toggleDrawer(false, content, anchor_)}
+          onClose={() => setOpen(false)}
           anchor={anchor_}
           PaperProps={{
             className: "w-2/3 lg:w-1/4",
