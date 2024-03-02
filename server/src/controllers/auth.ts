@@ -38,10 +38,7 @@ const register = async (req: Request, res: Response) => {
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    const userId = crypto.randomUUID();
-
     const newUser = await UserModal.create({
-      id: userId,
       name,
       email,
       password: hashedPassword,
@@ -51,6 +48,8 @@ const register = async (req: Request, res: Response) => {
 
     res.status(201).json({ message: "Üyelik oluşturma işlemi başarılı." });
   } catch (error) {
+    console.error(error);
+
     return res
       .status(500)
       .json({ message: "Üyelik oluşturulurken bir hata oluştu.", error });
@@ -97,8 +96,8 @@ const login = async (req: Request, res: Response) => {
     }
 
     const token = jwt.sign(
-      { userId: isExistingUser.id },
-      process.env.JWT_SECRET_KEY as string,
+      { userId: isExistingUser._id },
+      process.env.JWT_SECRET as string,
       {
         expiresIn: "1w",
       }
@@ -111,6 +110,7 @@ const login = async (req: Request, res: Response) => {
         userId: isExistingUser.id,
         name: isExistingUser.name,
         email: isExistingUser.email,
+        favorites: isExistingUser.favorites,
       },
     });
   } catch (error) {
