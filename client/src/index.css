@@ -5,3 +5,7 @@
 body {
   font-family: "Comfortaa Variable", system-ui;
 }
+
+body::-webkit-scrollbar {
+  display: none;
+}

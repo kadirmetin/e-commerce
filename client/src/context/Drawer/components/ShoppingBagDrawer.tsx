@@ -32,7 +32,7 @@ const ShoppingBagDrawerContent: FC<ShoppingBagDrawerContentProps> = ({
       <Divider />
 
       <Box className="h-full flex flex-col justify-center items-center ">
-        <LocalGroceryStoreIcon color="error" sx={{ fontSize: 96 }} />
+        <LocalGroceryStoreIcon color="inherit" sx={{ fontSize: 96 }} />
         <Typography variant="body2" className="pt-2" textAlign="center">
           Sepetinizde herhangi bir ürün yok.
         </Typography>

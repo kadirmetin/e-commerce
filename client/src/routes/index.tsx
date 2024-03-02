@@ -1,16 +1,19 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { AnonymousLayout, MainLayout } from "../components";
-import { AccountIndex, HomeIndex, ProductIndex } from "../pages";
+import ScrollToTop from "../components/layouts/components/ScrollToTop";
+import { AccountIndex, HomeIndex, NotFound, ProductIndex } from "../pages";
 import Login from "../pages/Account/Login";
 import Register from "../pages/Account/Register";
 import { LoginandRegisterProtect, ProtectedRoute } from "./ProtectedRoute";
 
 const RoutesList = () => {
+  ScrollToTop();
   return (
     <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomeIndex />} />
-        <Route path="/product" element={<ProductIndex />} />
+        <Route path="/product" element={<Navigate to="/404" replace />} />
+        <Route path="/product/:productId" element={<ProductIndex />} />
       </Route>
       <Route path="/account">
         <Route element={<MainLayout />}>
@@ -25,6 +28,7 @@ const RoutesList = () => {
           </Route>
         </Route>
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
