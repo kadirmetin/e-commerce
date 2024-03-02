@@ -103,20 +103,14 @@ const Login = () => {
           setIsDisable(false);
         }, 3000);
       } else {
-        console.log("RESPONSE: ", response.data.message);
-
         openSnackbar(response.data.message, "error");
       }
     } catch (error) {
       console.error("An error occurred:", error);
 
       if (axios.isAxiosError(error) && error.response?.data?.message) {
-        console.log("RESPONSE: ", error.response.data.message);
-
         openSnackbar(error.response.data.message, "error");
       } else {
-        console.log("RESPONSE: ", (error as Error).message);
-
         openSnackbar(`Bir hata oluştu: ${(error as Error).message}`, "error");
       }
     } finally {

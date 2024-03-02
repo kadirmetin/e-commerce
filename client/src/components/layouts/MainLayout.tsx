@@ -1,3 +1,4 @@
+import { Container } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { Footer, Header } from "./components";
 
@@ -11,7 +12,9 @@ const MainLayout = () => {
           paddingBottom: 5,
         }}
       >
-        <Outlet />
+        <Container>
+          <Outlet />
+        </Container>
       </main>
       <Footer />
     </>

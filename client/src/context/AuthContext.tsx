@@ -11,12 +11,14 @@ interface User {
   userId: string;
   name: string;
   email: string;
+  favorites: string[];
 }
 
 interface AuthContextProps {
   token: string | null;
   user: User | null;
   setTokenandUser: (newToken: string | null, userInfo: User | null) => void;
+  updateUserFavorites: (newFavorites: string[]) => void;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -37,7 +39,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setUser(userInfo);
 
     if (newToken) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
+      axios.defaults.headers.common["Authorization"] = `${newToken}`;
 
       localStorage.setItem("token", newToken);
       localStorage.setItem("user", JSON.stringify(userInfo));
@@ -49,9 +51,20 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const updateUserFavorites = (newFavorites: string[]) => {
+    setUser((prevUser) => {
+      if (prevUser) {
+        const updatedUser = { ...prevUser, favorites: newFavorites };
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        return updatedUser;
+      }
+      return prevUser;
+    });
+  };
+
   useEffect(() => {
     if (token) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      axios.defaults.headers.common["Authorization"] = `${token}`;
     } else {
       delete axios.defaults.headers.common["Authorization"];
 
@@ -61,7 +74,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [token]);
 
   const contextValue = useMemo(
-    () => ({ token, user, setTokenandUser }),
+    () => ({ token, user, setTokenandUser, updateUserFavorites }),
     [token, user]
   );
 
