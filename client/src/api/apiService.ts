@@ -2,21 +2,7 @@ import axios, { AxiosError } from "axios";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
-interface getProductInfoProps {
-  productId: string;
-}
-
-interface addFavoriteProps {
-  productId: string;
-  token: string;
-}
-
-interface removeFavoriteProps {
-  productId: string;
-  token: string;
-}
-
-const getProductInfo = async ({ productId }: getProductInfoProps) => {
+const getProductInfo = async ({ productId }: { productId: string }) => {
   try {
     if (productId) {
       const response = await axios.get(`${baseUrl}/product/info/${productId}`);
@@ -56,7 +42,13 @@ const getPopularProducts = async () => {
   }
 };
 
-const addFavorite = async ({ token, productId }: addFavoriteProps) => {
+const addFavorite = async ({
+  token,
+  productId,
+}: {
+  productId: string;
+  token: string;
+}) => {
   try {
     const response = await axios.post(
       `${baseUrl}/user/addFavorite`,
@@ -80,7 +72,13 @@ const addFavorite = async ({ token, productId }: addFavoriteProps) => {
   }
 };
 
-const removeFavorite = async ({ token, productId }: removeFavoriteProps) => {
+const removeFavorite = async ({
+  token,
+  productId,
+}: {
+  productId: string;
+  token: string;
+}) => {
   try {
     const response = await axios.post(
       `${baseUrl}/user/removeFavorite`,
@@ -104,8 +102,34 @@ const removeFavorite = async ({ token, productId }: removeFavoriteProps) => {
   }
 };
 
+const getAllCategories = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/category/getAllCategories`);
+
+    return response;
+  } catch (error) {
+    console.error(error);
+
+    return (error as AxiosError).response;
+  }
+};
+
+const getCategoriesProduct = async ({ categoryId }: { categoryId: string }) => {
+  try {
+    const response = await axios.get(`${baseUrl}/category/info/${categoryId}`);
+
+    return response;
+  } catch (error) {
+    console.error(error);
+
+    return (error as AxiosError).response;
+  }
+};
+
 export {
   addFavorite,
+  getAllCategories,
+  getCategoriesProduct,
   getNewProducts,
   getPopularProducts,
   getProductInfo,

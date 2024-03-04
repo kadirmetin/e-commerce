@@ -1,10 +1,16 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AnonymousLayout, MainLayout } from "../components";
 import ScrollToTop from "../components/layouts/components/ScrollToTop";
-import { AccountIndex, HomeIndex, NotFound, ProductIndex } from "../pages";
-import Login from "../pages/Account/Login";
-import Register from "../pages/Account/Register";
-import OrderReceived from "../pages/OrderReceived";
+import {
+  AccountIndex,
+  CategoryIndex,
+  HomeIndex,
+  Login,
+  NotFound,
+  OrderReceived,
+  ProductIndex,
+  Register,
+} from "../pages";
 import { LoginandRegisterProtect, ProtectedRoute } from "./ProtectedRoute";
 
 const RoutesList = () => {
@@ -20,6 +26,8 @@ const RoutesList = () => {
             <Route index={true} element={<OrderReceived />} />
           </Route>
         </Route>
+        <Route path="/category" element={<Navigate to="/404" replace />} />
+        <Route path="/category/:categoryId" element={<CategoryIndex />} />
       </Route>
       <Route path="/account">
         <Route element={<MainLayout />}>
