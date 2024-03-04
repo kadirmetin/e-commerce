@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Comfortaa Variable", system-ui;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
