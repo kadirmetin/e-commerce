@@ -1,6 +1,10 @@
 import express from "express";
 import { login, register } from "../controllers/auth";
 import {
+  getAllCategories,
+  getCategoriesProduct,
+} from "../controllers/category";
+import {
   addNewProduct,
   getNewProducts,
   getPopulerProducts,
@@ -22,5 +26,8 @@ router.post("/product/addNewProduct", verifyToken, isAdmin, addNewProduct);
 
 router.post("/user/addFavorite", verifyToken, addFavorite);
 router.post("/user/removeFavorite", verifyToken, removeFavorite);
+
+router.get("/category/getAllCategories", getAllCategories);
+router.get("/category/info/:categoryId", getCategoriesProduct);
 
 export { router };
