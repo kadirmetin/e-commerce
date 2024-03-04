@@ -8,6 +8,7 @@ interface ProductProps {
   _id: string;
   name: string;
   image: string;
+  price: string;
 }
 
 const CategoryIndex = () => {
@@ -99,7 +100,7 @@ const CategoryIndex = () => {
                   <Typography
                     variant="body2"
                     color={"black"}
-                    className="w-full text-center overflow-hidden"
+                    className="w-2/3 text-left overflow-hidden"
                     style={{
                       display: "-webkit-box",
                       WebkitBoxOrient: "vertical",
@@ -108,6 +109,13 @@ const CategoryIndex = () => {
                     }}
                   >
                     {product?.name}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color={"black"}
+                    className="w-1/3 text-right"
+                  >
+                    {product?.price}
                   </Typography>
                 </Box>
               </Box>
