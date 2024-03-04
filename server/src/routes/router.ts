@@ -1,5 +1,6 @@
 import express from "express";
 import { login, register } from "../controllers/auth";
+import { getAllBanners } from "../controllers/banner";
 import {
   getAllCategories,
   getCategoriesProduct,
@@ -29,5 +30,7 @@ router.post("/user/removeFavorite", verifyToken, removeFavorite);
 
 router.get("/category/getAllCategories", getAllCategories);
 router.get("/category/info/:categoryId", getCategoriesProduct);
+
+router.get("/getAllBanners", getAllBanners);
 
 export { router };

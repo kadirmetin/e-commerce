@@ -126,8 +126,21 @@ const getCategoriesProduct = async ({ categoryId }: { categoryId: string }) => {
   }
 };
 
+const getAllBanners = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/getAllBanners`);
+
+    return response;
+  } catch (error) {
+    console.error(error);
+
+    return (error as AxiosError).response;
+  }
+};
+
 export {
   addFavorite,
+  getAllBanners,
   getAllCategories,
   getCategoriesProduct,
   getNewProducts,

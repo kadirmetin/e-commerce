@@ -1,14 +1,37 @@
 import { Box, Typography } from "@mui/material";
-import type { FC } from "react";
+import type { FC, MouseEvent } from "react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import ProductCard from "../../../components/ProductCard";
 
+interface CustomArrowProps {
+  onClick?: (event: MouseEvent<HTMLElement>) => void;
+}
+
 interface HomePageProductCardAreaProps {
   title: string;
   products: [] | undefined;
 }
+
+const CustomPrevArrow: FC<CustomArrowProps> = ({ onClick }) => (
+  <Box
+    className="absolute top-2/4 -translate-y-2/4 cursor-pointer bg-gray-200 p-2 z-[1] rounded-full flex flex-col items-center justify-center left-4"
+    onClick={onClick}
+  >
+    <FaChevronLeft className="text-center text-lg" />
+  </Box>
+);
+
+const CustomNextArrow: FC<CustomArrowProps> = ({ onClick }) => (
+  <Box
+    className="absolute top-2/4 -translate-y-2/4 cursor-pointer bg-gray-200 p-2 z-[1] rounded-full flex flex-col items-center justify-center right-4"
+    onClick={onClick}
+  >
+    <FaChevronRight className="text-center" fontSize={"large"} />
+  </Box>
+);
 
 const HomePageProductCardArea: FC<HomePageProductCardAreaProps> = ({
   title,
@@ -17,10 +40,13 @@ const HomePageProductCardArea: FC<HomePageProductCardAreaProps> = ({
   const settings = {
     infinite: false,
     dots: false,
-    arrows: false,
+    arrows: true,
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 4,
+    draggable: false,
+    prevArrow: <CustomPrevArrow />,
+    nextArrow: <CustomNextArrow />,
     responsive: [
       {
         breakpoint: 1150,
@@ -41,7 +67,6 @@ const HomePageProductCardArea: FC<HomePageProductCardAreaProps> = ({
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          centerMode: true,
         },
       },
     ],

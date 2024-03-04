@@ -62,7 +62,7 @@ const CategoryIndex = () => {
             </Typography>
           </Box>
 
-          <Box className="grid grid-cols-1 gap-4 w-full pt-4 justify-items-center md:grid-cols-4">
+          <Box className="grid grid-cols-1 gap-8 w-full pt-4 justify-items-center md:grid-cols-4">
             {products.map((product, index) => (
               <Box
                 sx={{
