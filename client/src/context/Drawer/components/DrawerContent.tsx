@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import { FC } from "react";
+import AdminDrawer from "./AdminDrawer";
 import MenuDrawerContent from "./MenuDrawer";
 import ShoppingBagDrawerContent from "./ShoppingBagDrawer";
 
@@ -21,6 +22,7 @@ const DrawerContent: FC<DrawerContentProps> = ({ toggleDrawer, content }) => {
       {content === "shoppingBag" ? (
         <ShoppingBagDrawerContent toggleDrawer={toggleDrawer} />
       ) : null}
+      {content === "admin" ? <AdminDrawer toggleDrawer={toggleDrawer} /> : null}
     </Box>
   );
 };

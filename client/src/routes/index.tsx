@@ -1,8 +1,10 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AnonymousLayout, MainLayout } from "../components";
+import AdminLayout from "../components/layouts/AdminLayout";
 import ScrollToTop from "../components/layouts/components/ScrollToTop";
 import {
   AccountIndex,
+  AdminIndex,
   CategoryIndex,
   HomeIndex,
   Login,
@@ -11,7 +13,11 @@ import {
   ProductIndex,
   Register,
 } from "../pages";
-import { LoginandRegisterProtect, ProtectedRoute } from "./ProtectedRoute";
+import {
+  AdminProtect,
+  LoginandRegisterProtect,
+  ProtectedRoute,
+} from "./ProtectedRoute";
 
 const RoutesList = () => {
   ScrollToTop();
@@ -30,15 +36,22 @@ const RoutesList = () => {
         <Route path="/category/:categoryId" element={<CategoryIndex />} />
       </Route>
       <Route path="/account">
-        <Route element={<MainLayout />}>
-          <Route element={<ProtectedRoute />}>
+        <Route element={<ProtectedRoute />}>
+          <Route element={<MainLayout />}>
             <Route index={true} element={<AccountIndex />} />
           </Route>
         </Route>
-        <Route element={<AnonymousLayout />}>
-          <Route element={<LoginandRegisterProtect />}>
+        <Route element={<LoginandRegisterProtect />}>
+          <Route element={<AnonymousLayout />}>
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />R
+          </Route>
+        </Route>
+      </Route>
+      <Route path="/admin">
+        <Route element={<AdminProtect />}>
+          <Route element={<AdminLayout />}>
+            <Route index={true} element={<AdminIndex />} />
           </Route>
         </Route>
       </Route>

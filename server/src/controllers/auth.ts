@@ -111,6 +111,7 @@ const login = async (req: Request, res: Response) => {
         name: isExistingUser.name,
         email: isExistingUser.email,
         favorites: isExistingUser.favorites,
+        role: isExistingUser.role,
       },
     });
   } catch (error) {

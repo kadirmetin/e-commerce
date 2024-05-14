@@ -11,6 +11,7 @@ interface User {
   userId: string;
   name: string;
   email: string;
+  role: string;
   favorites: string[];
 }
 

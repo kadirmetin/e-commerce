@@ -1,6 +1,7 @@
 export { default as Login } from "./Account/Login";
 export { default as Register } from "./Account/Register";
 export { default as AccountIndex } from "./Account/index";
+export { default as AdminIndex } from "./Admin/index";
 export { default as CategoryIndex } from "./Category/index";
 export { default as HomeIndex } from "./Home/index";
 export { default as NotFound } from "./NotFound";

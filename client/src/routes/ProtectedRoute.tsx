@@ -20,3 +20,17 @@ export const LoginandRegisterProtect = () => {
 
   return <Outlet />;
 };
+
+export const AdminProtect = () => {
+  const { user } = useAuth();
+
+  if (!user) {
+    return <Navigate to="/account/login" />;
+  }
+
+  if (user.role !== "ADMIN") {
+    return <Navigate to={"/"} />;
+  }
+
+  return <Outlet />;
+};

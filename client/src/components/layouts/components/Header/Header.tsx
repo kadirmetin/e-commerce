@@ -117,35 +117,43 @@ const Header = () => {
           </IconButton>
 
           <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-            {token
-              ? [
-                  <MenuItem key="account" onClick={() => navigate("/account")}>
-                    Hesabım
-                  </MenuItem>,
-                  <MenuItem
-                    key="favorites"
-                    onClick={() => navigate("/account")}
-                  >
-                    Favoriler
-                  </MenuItem>,
-                  <MenuItem key="logout" onClick={handleLogout}>
-                    Çıkış Yap
-                  </MenuItem>,
-                ]
-              : [
-                  <MenuItem
-                    key="login"
-                    onClick={() => navigate("/account/login")}
-                  >
-                    Giriş Yap
-                  </MenuItem>,
-                  <MenuItem
-                    key="register"
-                    onClick={() => navigate("/account/register")}
-                  >
-                    Üye Ol
-                  </MenuItem>,
-                ]}
+            {token ? (
+              <>
+                {user?.role === "ADMIN" ? (
+                  <MenuItem key="admin" onClick={() => navigate("/admin")}>
+                    Admin
+                  </MenuItem>
+                ) : null}
+
+                <MenuItem key="account" onClick={() => navigate("/account")}>
+                  Hesabım
+                </MenuItem>
+
+                <MenuItem key="favorites" onClick={() => navigate("/account")}>
+                  Favoriler
+                </MenuItem>
+
+                <MenuItem key="logout" onClick={handleLogout}>
+                  Çıkış Yap
+                </MenuItem>
+              </>
+            ) : (
+              <>
+                <MenuItem
+                  key="login"
+                  onClick={() => navigate("/account/login")}
+                >
+                  Giriş Yap
+                </MenuItem>
+
+                <MenuItem
+                  key="register"
+                  onClick={() => navigate("/account/register")}
+                >
+                  Üye Ol
+                </MenuItem>
+              </>
+            )}
           </Menu>
 
           <Box position="relative">
