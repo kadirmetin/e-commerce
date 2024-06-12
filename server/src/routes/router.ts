@@ -11,6 +11,10 @@ import {
   getPopulerProducts,
   getProductInfo,
 } from "../controllers/product";
+import {
+  getTotalCategoryCount,
+  getTotalProductsCount,
+} from "../controllers/static";
 import { addFavorite, removeFavorite } from "../controllers/user";
 import { isAdmin, verifyToken } from "../middleware/authMid";
 
@@ -32,5 +36,8 @@ router.get("/category/getAllCategories", getAllCategories);
 router.get("/category/info/:categoryId", getCategoriesProduct);
 
 router.get("/getAllBanners", getAllBanners);
+
+router.get("/static/getTotalProductsCount", getTotalProductsCount);
+router.get("/static/getTotalCategoryCount", getTotalCategoryCount);
 
 export { router };
