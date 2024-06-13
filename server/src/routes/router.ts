@@ -13,7 +13,9 @@ import {
 } from "../controllers/product";
 import {
   getTotalCategoryCount,
+  getTotalOrderCount,
   getTotalProductsCount,
+  getTotalUserCount,
 } from "../controllers/static";
 import { addFavorite, removeFavorite } from "../controllers/user";
 import { isAdmin, verifyToken } from "../middleware/authMid";
@@ -39,5 +41,7 @@ router.get("/getAllBanners", getAllBanners);
 
 router.get("/static/getTotalProductsCount", getTotalProductsCount);
 router.get("/static/getTotalCategoryCount", getTotalCategoryCount);
+router.get("/static/getTotalOrderCount", getTotalOrderCount);
+router.get("/static/getTotalUserCount", getTotalUserCount);
 
 export { router };

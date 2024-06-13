@@ -66,6 +66,30 @@ const getTotalCategoryCount = async () => {
   }
 };
 
+const getTotalOrderCount = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/static/getTotalOrderCount`);
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+
+    return (error as AxiosError).response;
+  }
+};
+
+const getTotalUserCount = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/static/getTotalUserCount`);
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+
+    return (error as AxiosError).response;
+  }
+};
+
 const addFavorite = async ({
   token,
   productId,
@@ -171,6 +195,8 @@ export {
   getPopularProducts,
   getProductInfo,
   getTotalCategoryCount,
+  getTotalOrderCount,
   getTotalProductsCount,
+  getTotalUserCount,
   removeFavorite,
 };
