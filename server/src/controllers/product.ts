@@ -93,4 +93,23 @@ const getPopulerProducts = async (req: Request, res: Response) => {
   }
 };
 
-export { addNewProduct, getNewProducts, getPopulerProducts, getProductInfo };
+const getAllProducts = async (req: Request, res: Response) => {
+  try {
+    const products = await ProductModal.find()
+      .populate("category", "name")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Sunucu hatası!" });
+  }
+};
+
+export {
+  addNewProduct,
+  getAllProducts,
+  getNewProducts,
+  getPopulerProducts,
+  getProductInfo,
+};

@@ -10,7 +10,9 @@ import {
   Login,
   NotFound,
   OrderReceived,
+  ProductAddIndex,
   ProductIndex,
+  ProductsIndex,
   Register,
 } from "../pages";
 import {
@@ -44,7 +46,7 @@ const RoutesList = () => {
         <Route element={<LoginandRegisterProtect />}>
           <Route element={<AnonymousLayout />}>
             <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />R
+            <Route path="register" element={<Register />} />
           </Route>
         </Route>
       </Route>
@@ -52,6 +54,8 @@ const RoutesList = () => {
         <Route element={<AdminProtect />}>
           <Route element={<AdminLayout />}>
             <Route index={true} element={<AdminIndex />} />
+            <Route path="/admin/products" element={<ProductsIndex />} />
+            <Route path="/admin/products/add" element={<ProductAddIndex />} />
           </Route>
         </Route>
       </Route>

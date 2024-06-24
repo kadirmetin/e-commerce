@@ -55,11 +55,9 @@ const AdminIndex = (props: Props) => {
   }, []);
 
   return (
-    <Container maxWidth="xl">
-      <Typography variant="h5" className="py-4">
-        Dashboard
-      </Typography>
-      <Box className="flex flex-col justify-between items-center gap-4 md:flex-row">
+    <Container maxWidth={"xl"} className="pt-8">
+      <Typography variant="h5">Dashboard</Typography>
+      <Box className="flex flex-col justify-between items-center pt-4 md:flex-row">
         <StatCard
           loading={loading}
           stat={statics.user}

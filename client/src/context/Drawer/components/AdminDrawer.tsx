@@ -1,17 +1,17 @@
-import { ExpandLess, ExpandMore, Inventory } from "@mui/icons-material";
+import { Dashboard, Inventory } from "@mui/icons-material";
 import ClearIcon from "@mui/icons-material/Clear";
 import {
   Box,
-  Collapse,
   Divider,
   IconButton,
-  List,
+  ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Typography,
 } from "@mui/material";
-import { FC, useState } from "react";
+import { FC } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface AdminDrawerProps {
   toggleDrawer: (
@@ -22,11 +22,7 @@ interface AdminDrawerProps {
 }
 
 const MenuDrawer: FC<AdminDrawerProps> = ({ toggleDrawer }) => {
-  const [open, setOpen] = useState(false);
-
-  const handleClick = () => {
-    setOpen(!open);
-  };
+  const navigate = useNavigate();
 
   return (
     <Box className="w-full flex flex-col ">
@@ -48,29 +44,34 @@ const MenuDrawer: FC<AdminDrawerProps> = ({ toggleDrawer }) => {
       </Box>
 
       <Box>
-        <ListItemButton onClick={handleClick}>
-          <ListItemIcon>
-            <Inventory />
-          </ListItemIcon>
-          <ListItemText primary="Ürünler" />
-          {open ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemText primary="Ürün Ekle" />
-            </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemText primary="Ürün Listesi" />
-            </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemText primary="Kategoriler" />
-            </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemText primary="Markalar" />
-            </ListItemButton>
-          </List>
-        </Collapse>
+        <ListItem
+          disablePadding
+          onClick={() => {
+            navigate("/admin");
+            toggleDrawer(false, "menu", "left");
+          }}
+        >
+          <ListItemButton>
+            <ListItemIcon>
+              <Dashboard />
+            </ListItemIcon>
+            <ListItemText primary={"Dashboard"} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem
+          disablePadding
+          onClick={() => {
+            navigate("/admin/products");
+            toggleDrawer(false, "menu", "left");
+          }}
+        >
+          <ListItemButton>
+            <ListItemIcon>
+              <Inventory />
+            </ListItemIcon>
+            <ListItemText primary={"Ürünler"} />
+          </ListItemButton>
+        </ListItem>
       </Box>
     </Box>
   );

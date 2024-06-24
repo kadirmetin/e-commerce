@@ -23,7 +23,14 @@ const AdminHeader = () => {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" noWrap>
+            <Typography
+              variant="h6"
+              noWrap
+              className="cursor-pointer"
+              onClick={() => {
+                navigate("/admin");
+              }}
+            >
               SMA Shop - Admin
             </Typography>
           </Box>

@@ -7,6 +7,7 @@ import {
 } from "../controllers/category";
 import {
   addNewProduct,
+  getAllProducts,
   getNewProducts,
   getPopulerProducts,
   getProductInfo,
@@ -28,6 +29,7 @@ router.post("/login", login);
 router.get("/product/info/:productId", getProductInfo);
 router.get("/product/new", getNewProducts);
 router.get("/product/popular", getPopulerProducts);
+router.get("/product/all", getAllProducts);
 
 router.post("/product/addNewProduct", verifyToken, isAdmin, addNewProduct);
 

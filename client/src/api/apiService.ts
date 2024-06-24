@@ -186,10 +186,23 @@ const getAllBanners = async () => {
   }
 };
 
+const getAllProducts = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/product/all`);
+
+    return response;
+  } catch (error) {
+    console.error(error);
+
+    return (error as AxiosError).response;
+  }
+};
+
 export {
   addFavorite,
   getAllBanners,
   getAllCategories,
+  getAllProducts,
   getCategoriesProduct,
   getNewProducts,
   getPopularProducts,
