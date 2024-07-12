@@ -6,7 +6,6 @@ import {
   CircularProgress,
   Typography,
 } from "@mui/material";
-import React from "react";
 
 type Props = {
   title: string;
@@ -17,7 +16,7 @@ type Props = {
 
 const StatCard = (props: Props) => {
   return (
-    <React.Fragment>
+    <>
       <Card
         variant="outlined"
         className="w-full h-36 flex justify-center items-center md:w-80"
@@ -42,7 +41,7 @@ const StatCard = (props: Props) => {
           )}
         </CardContent>
       </Card>
-    </React.Fragment>
+    </>
   );
 };
 

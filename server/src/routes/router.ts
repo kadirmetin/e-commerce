@@ -18,6 +18,7 @@ import {
   getTotalProductsCount,
   getTotalUserCount,
 } from "../controllers/static";
+import { UploadImage } from "../controllers/upload";
 import { addFavorite, removeFavorite } from "../controllers/user";
 import { isAdmin, verifyToken } from "../middleware/authMid";
 
@@ -40,6 +41,8 @@ router.get("/category/getAllCategories", getAllCategories);
 router.get("/category/info/:categoryId", getCategoriesProduct);
 
 router.get("/getAllBanners", getAllBanners);
+
+router.post("/upload", UploadImage);
 
 router.get("/static/getTotalProductsCount", getTotalProductsCount);
 router.get("/static/getTotalCategoryCount", getTotalCategoryCount);

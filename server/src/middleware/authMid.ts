@@ -39,7 +39,7 @@ const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
       return res.status(400).json({ error: "Hatalı veya eksik bilgi!" });
     }
 
-    const user = await UserModal.findById({ userId });
+    const user = await UserModal.findById(userId);
 
     if (!user) {
       return res.status(400).json({ error: "Geçersiz id!" });

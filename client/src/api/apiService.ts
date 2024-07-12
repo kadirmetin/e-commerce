@@ -198,8 +198,64 @@ const getAllProducts = async () => {
   }
 };
 
+const uploadImage = async (images: object) => {
+  try {
+    const response = await axios.post(`${baseUrl}/upload`, {
+      images,
+    });
+
+    return response;
+  } catch (error) {
+    console.error(error);
+
+    return (error as AxiosError).response;
+  }
+};
+
+const addNewProduct = async ({
+  token,
+  values,
+}: {
+  token: string | null;
+  values: {
+    productName: string;
+    category: string;
+    brand: string;
+    price: number;
+    description: string;
+    images: string[];
+  };
+}) => {
+  try {
+    const response = await axios.post(
+      `${baseUrl}/product/addNewProduct`,
+      {
+        name: values.productName,
+        category: values.category,
+        brand: values.brand,
+        price: values.price,
+        desc: values.description,
+        images: values.images,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error(error);
+
+    return (error as AxiosError).response;
+  }
+};
+
 export {
   addFavorite,
+  addNewProduct,
   getAllBanners,
   getAllCategories,
   getAllProducts,
@@ -212,4 +268,5 @@ export {
   getTotalProductsCount,
   getTotalUserCount,
   removeFavorite,
+  uploadImage,
 };

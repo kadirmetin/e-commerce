@@ -4,9 +4,9 @@ import ProductModal from "../models/Product";
 
 const addNewProduct = async (req: Request, res: Response) => {
   try {
-    const { name, desc, image, price, category } = req.body;
+    const { name, desc, brand, images, price, category } = req.body;
 
-    if (!name || !desc || !image || !price || !category) {
+    if (!name || !desc || !brand || !images || !price || !category) {
       return res
         .status(400)
         .json({ message: "Lütfen bütün alanları doldurunuz." });
@@ -21,7 +21,8 @@ const addNewProduct = async (req: Request, res: Response) => {
     const newProduct = await ProductModal.create({
       name,
       desc,
-      image,
+      brand,
+      images,
       price,
       category: categoryObject._id,
     });

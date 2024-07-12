@@ -10,8 +10,8 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    image: {
-      type: String,
+    images: {
+      type: Array,
       required: true,
     },
     price: {
@@ -21,7 +21,7 @@ const ProductSchema = new mongoose.Schema(
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "categories",
-      require: true,
+      required: true,
     },
     favoriteCount: {
       type: Number,
@@ -34,4 +34,5 @@ const ProductSchema = new mongoose.Schema(
 );
 
 const ProductModal = mongoose.model("products", ProductSchema);
+
 export default ProductModal;

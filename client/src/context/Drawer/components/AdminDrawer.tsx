@@ -35,7 +35,7 @@ const MenuDrawer: FC<AdminDrawerProps> = ({ toggleDrawer }) => {
             aria-label="exit"
             edge="start"
             color="inherit"
-            onClick={() => toggleDrawer(false, "menu", "left")}
+            onClick={() => toggleDrawer(false, "admin", "left")}
           >
             <ClearIcon color="inherit" fontSize="medium" />
           </IconButton>

@@ -3,9 +3,10 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import connectDB from "../config/db";
-import { router } from "./routes/router";
 
 dotenv.config();
+
+import { router } from "./routes/router";
 
 const app = express();
 app.use(cors());
