@@ -1,23 +1,23 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const BannerSchema = new mongoose.Schema(
   {
     title: {
-      type: String,
+      type: String
     },
     image: {
-      type: String,
+      type: String
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "categories",
-    },
+      ref: 'categories'
+    }
   },
   {
-    timestamps: true,
+    timestamps: true
   }
-);
+)
 
-const BannerModal = mongoose.model("banners", BannerSchema);
+const BannerModal = mongoose.model('banners', BannerSchema)
 
-export default BannerModal;
+export default BannerModal

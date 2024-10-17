@@ -1,52 +1,49 @@
-import express from "express";
-import { login, register } from "../controllers/auth";
-import { getAllBanners } from "../controllers/banner";
-import {
-  getAllCategories,
-  getCategoriesProduct,
-} from "../controllers/category";
+import express from 'express'
+import { login, register } from '../controllers/auth'
+import { getAllBanners } from '../controllers/banner'
+import { getAllCategories, getCategoriesProduct } from '../controllers/category'
 import {
   addNewProduct,
   getAllProducts,
   getNewProducts,
   getPopulerProducts,
-  getProductInfo,
-} from "../controllers/product";
+  getProductInfo
+} from '../controllers/product'
 import {
   getTotalCategoryCount,
   getTotalOrderCount,
   getTotalProductsCount,
-  getTotalUserCount,
-} from "../controllers/static";
-import { UploadImage } from "../controllers/upload";
-import { addFavorite, removeFavorite } from "../controllers/user";
-import { isAdmin, verifyToken } from "../middleware/authMid";
+  getTotalUserCount
+} from '../controllers/static'
+import { UploadImage } from '../controllers/upload'
+import { addFavorite, removeFavorite } from '../controllers/user'
+import { isAdmin, verifyToken } from '../middleware/authMid'
 
-const router = express.Router();
+const router = express.Router()
 
-router.post("/register", register);
-router.post("/login", login);
+router.post('/register', register)
+router.post('/login', login)
 
-router.get("/product/info/:productId", getProductInfo);
-router.get("/product/new", getNewProducts);
-router.get("/product/popular", getPopulerProducts);
-router.get("/product/all", getAllProducts);
+router.get('/product/info/:productId', getProductInfo)
+router.get('/product/new', getNewProducts)
+router.get('/product/popular', getPopulerProducts)
+router.get('/product/all', getAllProducts)
 
-router.post("/product/addNewProduct", verifyToken, isAdmin, addNewProduct);
+router.post('/product/addNewProduct', verifyToken, isAdmin, addNewProduct)
 
-router.post("/user/addFavorite", verifyToken, addFavorite);
-router.post("/user/removeFavorite", verifyToken, removeFavorite);
+router.post('/user/addFavorite', verifyToken, addFavorite)
+router.post('/user/removeFavorite', verifyToken, removeFavorite)
 
-router.get("/category/getAllCategories", getAllCategories);
-router.get("/category/info/:categoryId", getCategoriesProduct);
+router.get('/category/getAllCategories', getAllCategories)
+router.get('/category/info/:categoryId', getCategoriesProduct)
 
-router.get("/getAllBanners", getAllBanners);
+router.get('/getAllBanners', getAllBanners)
 
-router.post("/upload", UploadImage);
+router.post('/upload', UploadImage)
 
-router.get("/static/getTotalProductsCount", getTotalProductsCount);
-router.get("/static/getTotalCategoryCount", getTotalCategoryCount);
-router.get("/static/getTotalOrderCount", getTotalOrderCount);
-router.get("/static/getTotalUserCount", getTotalUserCount);
+router.get('/static/getTotalProductsCount', getTotalProductsCount)
+router.get('/static/getTotalCategoryCount', getTotalCategoryCount)
+router.get('/static/getTotalOrderCount', getTotalOrderCount)
+router.get('/static/getTotalUserCount', getTotalUserCount)
 
-export { router };
+export { router }

@@ -1,14 +1,14 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const CategorySchema = new mongoose.Schema({
   name: {
     type: String,
-    unique: true,
+    unique: true
   },
   desc: {
-    type: String,
-  },
-});
+    type: String
+  }
+})
 
-const CategoryModal = mongoose.model("categories", CategorySchema);
-export default CategoryModal;
+const CategoryModal = mongoose.model('categories', CategorySchema)
+export default CategoryModal
